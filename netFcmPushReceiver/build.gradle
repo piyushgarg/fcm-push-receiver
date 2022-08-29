@@ -1,0 +1,68 @@
+apply plugin: 'java-library'
+
+repositories {
+    mavenCentral()
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.6'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'com.google.protobuf'
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'build/generated/source/proto/main/javalite'
+        }
+    }
+}
+
+jar {
+    exclude("*.proto")
+}
+
+dependencies {
+    implementation 'org.json:json:20180813'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1' // used because of incompatibility with A4
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.60'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.60'
+    implementation 'commons-io:commons-io:2.6'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            javalite { }
+        }
+        all().each { task ->
+            task.builtins {
+                remove java
+            }
+        }
+    }
+}
