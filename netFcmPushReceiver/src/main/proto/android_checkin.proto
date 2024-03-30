@@ -1,4 +1,4 @@
-// Copyright 2014 The Chromium Authors. All rights reserved.
+// Copyright 2014 The Chromium Authors
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 //
@@ -8,7 +8,7 @@
 syntax = "proto2";
 
 option optimize_for = LITE_RUNTIME;
-package com.google.gms.checkin;
+package checkin_proto;
 
 // Build characteristics unique to the Chrome browser, and Chrome OS
 message ChromeBuildProto {
@@ -72,7 +72,7 @@ message AndroidCheckinProto {
   // For devices running MCS on Chrome, build-specific characteristics
   // of the browser.  There are no hardware aspects (except for ChromeOS).
   // This will only be populated for Chrome builds/ChromeOS devices
-  optional ChromeBuildProto chrome_build = 13;
+  optional checkin_proto.ChromeBuildProto chrome_build = 13;
 
   // Note: Some of the Android specific optional fields were skipped to limit
   // the protobuf definition.

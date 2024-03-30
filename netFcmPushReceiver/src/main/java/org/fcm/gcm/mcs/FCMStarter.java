@@ -104,19 +104,7 @@ public class FCMStarter {
     }
 
     public static boolean sendToEventHost(String json) {
-        if (json != null && json.contains("147354672683")) {
-            WebTarget target = CheckinClient.getStandardClient().target("http://localhost:1818");
-            try (Response response = target
-                    .request()
-                    .header(CONTENT_TYPE, APPLICATION_FORM_URLENCODED_TYPE)
-                    .post(Entity.entity(json, APPLICATION_JSON))) {
-                if (response.getStatus() == 200) {
-                    String string = response.readEntity(String.class);
-                    System.out.println("string = " + string);
-                    return true;
-                }
-            }
-        }
+
         return false;
     }
 
