@@ -7,9 +7,7 @@ public class Application {
     private FcmKeys keys;
     private Checkin gcm;
     private List<Sender> senders = new ArrayList<>();
-
-    private FCMRegistration fcm;
-
+    private FirebaseConfig fcm;
     public Application() {
     }
 
@@ -43,11 +41,11 @@ public class Application {
         this.senders = senders;
     }
 
-    public FCMRegistration getFcm() {
+    public FirebaseConfig getFcm() {
         return fcm;
     }
 
-    public void setFcm(FCMRegistration fcm) {
+    public void setFcm(FirebaseConfig fcm) {
         this.fcm = fcm;
     }
 }

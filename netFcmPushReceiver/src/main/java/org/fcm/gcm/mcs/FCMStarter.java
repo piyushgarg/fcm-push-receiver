@@ -15,6 +15,7 @@ import org.fcm.gcm.mcs.model.JsonService;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,15 +96,29 @@ public class FCMStarter {
 
     }
 
-    public String register(String senderId, String name, boolean newToken) throws IOException {
+    public String register(String senderId, String name, boolean newToken) throws IOException, NoSuchAlgorithmException {
         Map<String, String> map = new HashMap<>();
         map.put("senderId", senderId);
         map.put("name", name);
         map.put("newToken", String.valueOf(newToken));
-        return checkinClient.performTokenRegistration(map);
+        map.put("serverKey", DEFAULT_VAPID_KEY);
+        return checkinClient.performNewTokenRegistration(map);
     }
 
     public static boolean sendToEventHost(String json) {
+        if (json != null && json.contains("147354672683")) {
+            WebTarget target = CheckinClient.getStandardClient().target("http://localhost:1818");
+            try (Response response = target
+                    .request()
+                    .header(CONTENT_TYPE, APPLICATION_FORM_URLENCODED_TYPE)
+                    .post(Entity.entity(json, APPLICATION_JSON))) {
+                if (response.getStatus() == 200) {
+                    String string = response.readEntity(String.class);
+                    System.out.println("string = " + string);
+                    return true;
+                }
+            }
+        }
 
         return false;
     }

@@ -18,6 +18,10 @@ public class Base64 {
         return Encoder.RFC4648_URLSAFE;
     }
 
+    public static Encoder getUrlEncoderNoPad() {
+        return Encoder.RFC4648_URLSAFE_NOPAD;
+    }
+
     public static Encoder getMimeEncoder() {
         return Encoder.RFC2045;
     }
@@ -317,14 +321,14 @@ public class Base64 {
         static final Decoder RFC4648_URLSAFE;
         static final Decoder RFC2045;
 
-        private Decoder(boolean var1, boolean var2) {
-            this.isURL = var1;
-            this.isMIME = var2;
+        private Decoder(boolean isURL, boolean isMime) {
+            this.isURL = isURL;
+            this.isMIME = isMime;
         }
 
-        public byte[] decode(byte[] var1) {
-            byte[] var2 = new byte[this.outLength(var1, 0, var1.length)];
-            int var3 = this.decode0(var1, 0, var1.length, var2);
+        public byte[] decode(byte[] bytes) {
+            byte[] var2 = new byte[this.outLength(bytes, 0, bytes.length)];
+            int var3 = this.decode0(bytes, 0, bytes.length, var2);
             if (var3 != var2.length) {
                 var2 = Arrays.copyOf(var2, var3);
             }
@@ -507,6 +511,7 @@ public class Base64 {
         private static final byte[] CRLF = new byte[]{13, 10};
         static final Encoder RFC4648 = new Encoder(false, null, -1, true);
         static final Encoder RFC4648_URLSAFE = new Encoder(true, null, -1, true);
+        static final Encoder RFC4648_URLSAFE_NOPAD = new Encoder(true, null, -1, false);
         static final Encoder RFC2045;
 
         private Encoder(boolean isURL, byte[] newLine, int lineMax, boolean padding) {
